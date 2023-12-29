@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "A nix flake for my node versions that are cached in s3";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -14,8 +14,6 @@
         # versions of nodejs
         config.permittedInsecurePackages = [
           "nodejs-16.13.1"
-          "nodejs-12.20.1"
-          "python-2.7.18.7"
         ];
       };
 
@@ -42,41 +40,28 @@
           };
     in
       {
-        #api-v1 doesn't specify a node version
-        # web-react
         packages.x86_64-linux.nodejs_20-9-0 = buildNodeJs {
           enableNpm = true;
           version = "20.9.0";
           sha256 = "sha256-oj2WgQq/BFVCazSdR85TEPMwlbe8BXG5zFEPSBw6RRk=";
         };
 
-        #api-v2
         packages.x86_64-linux.nodejs_18-19-0 = buildNodeJs {
           enableNpm = false;
           version = "18.19.0";
           sha256 = "sha256-9StBryBZapq9jtdSQYN+xDlFRoIhRIu/hBNh4gkYGbY=";
         };
 
-        #web-angular
         packages.x86_64-linux.nodejs_16-13-1 = buildNodeJs {
           enableNpm = true;
           version = "16.13.1";
           sha256 = "sha256-TCMAT9der3ma2Odv409T4DJ/Qz1Ky/yIM5b3LpbMY60=";
         };
         
-        #api-v2
         packages.x86_64-linux.npm_9-6-7 = buildNpm {
           version = "9.6.7";
           sha256 = "sha256-mmw7kkUL42wtcWskDc4y2Rgo6Q2IIevxcbCYK5+pXVs=";
           npmDepsHash = "sha256-wRY5+lVMw2myi98VeI7raNvrltObv6z3bbBU9VcnaTo=";
-        };
-
-        # devops-db
-        packages.x86_64-linux.nodejs_12-20-1 = buildNodeJs {
-          enableNpm = true;
-          version = "12.20.1";
-          sha256 = "sha256-4A7uMl1wWyv6mSm30GHrIxVALX6FSJRerJhwv4QyGFM=";
-          python = pkgs.python2; # python2 needed to build legacy node
         };
       };
 }
