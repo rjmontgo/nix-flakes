@@ -14,6 +14,7 @@
         # versions of nodejs
         config.permittedInsecurePackages = [
           "nodejs-16.13.1"
+          "openssl-1.1.1w"
         ];
       };
 
@@ -28,11 +29,18 @@
         };
       };
 
-      buildNodeJs = { python ? pkgs.python310, enableNpm, version, sha256 }:
+      buildNodeJs =
+        {
+          python ? pkgs.python310,
+          openssl ? pkgs.openssl,
+          enableNpm,
+          version,
+          sha256
+        }:
         let
           nodejsbuilder = pkgs.callPackage
             "${nixpkgs}/pkgs/development/web/nodejs/nodejs.nix" {
-              inherit python;
+              inherit python openssl;
             };
         in
           nodejsbuilder {
@@ -56,6 +64,7 @@
           enableNpm = true;
           version = "16.13.1";
           sha256 = "sha256-TCMAT9der3ma2Odv409T4DJ/Qz1Ky/yIM5b3LpbMY60=";
+          openssl = pkgs.openssl_1_1;
         };
         
         packages.x86_64-linux.npm_9-6-7 = buildNpm {
